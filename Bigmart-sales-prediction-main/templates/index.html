@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <style>
+      body {
+        background: url("{{ url_for('static', filename='backgroundimage.jpeg') }}") no-repeat center center fixed;
+        background-size: cover;
+        position: relative;
+      }
+    
+      /* Adding blur effect */
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        filter: blur(0px);
+        z-index: -1;
+      }
+    
+      /* Making form readable */
+      .container {
+        background: rgba(0, 0, 0, 0.2); /* Light transparent background */
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 1;
+      }
+    </style>
+
+<style>
+  /* Style for legend background */
+  legend {
+    background: rgba(255, 255, 255, 0.8); /* Slight dark transparency */
+    color: white; /* White text for contrast */
+    padding: 5px 15px; /* Padding for better appearance */
+    text-align: center;
+    border-radius: 10px; /* Rounded corners */
+    font-weight: bold; /* Make it stand out */
+  }
+</style>
+
+<style>
+  .form-icon {
+    position: absolute;
+    top: 10px;
+    right: 20px; /* Adjust for better positioning */
+  }
+
+  .form-icon img {
+    width: 180px; /* Increase size */
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  }
+</style>
+
+
+
+    
+    
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      crossorigin="anonymous"
+    />
+    <title>Sales Vision</title>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark">
+      <span class="navbar-brand mb-0 h1">Sales Vision</span>
+    </nav>
+    <br /><br />
+
+    <div class="container">
+      <form class="app" method="POST" action="/predict" onsubmit="event.preventDefault(); submitForm();">
+        <fieldset>
+          <legend>Big Mart - Sales Prediction Form</legend><br />
+
+          <div class="card card-body">
+            <div class="form-group row">
+              <div class="col-sm-3">
+                <label for="Item_Weight">Item Weight</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  class="form-control"
+                  id="Item_Weight"
+                  name="Item_Weight"
+                  placeholder="Enter the Item Weight"
+                  value="{{ form_data['Item_Weight'] if form_data else '' }}"
+                  required
+                />
+              </div>
+
+              <div class="col-sm-3">
+                <label for="Item_MRP">Item MRP</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  class="form-control"
+                  id="Item_MRP"
+                  name="Item_MRP"
+                  placeholder="Enter the Item MRP"
+                  value="{{ form_data['Item_MRP'] if form_data else '' }}"
+                  required
+                />
+              </div>
+
+              <div class="col-sm-3">
+                <label for="Item_Visibility">Item Visibility</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  class="form-control"
+                  id="Item_Visibility"
+                  name="Item_Visibility"
+                  placeholder="Enter the Item Visibility"
+                  value="{{ form_data['Item_Visibility'] if form_data else '' }}"
+                  required
+                />
+              </div>
+              <div class="form-icon">
+                <img src="{{ url_for('static', filename='images.jpeg') }}" alt="Form Icon">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-sm-3">
+                <label for="Outlet_Establishment_Year">Outlet Establishment Year</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="Outlet_Establishment_Year"
+                  name="Outlet_Establishment_Year"
+                  placeholder="Enter the Establishment Year"
+                  value="{{ form_data['Outlet_Establishment_Year'] if form_data else '' }}"
+                  required
+                />
+              </div>
+
+              <div class="col-sm-3">
+                <label for="Item_Fat_Content">Item Fat Content</label>
+                <select class="form-control" id="Item_Fat_Content" name="Item_Fat_Content" required>
+                  <option disabled selected value>-- Select an Option --</option>
+                  <option value="Low Fat" {% if form_data and form_data['Item_Fat_Content'] == "Low Fat" %}selected{% endif %}>Low Fat</option>
+                  <option value="Regular" {% if form_data and form_data['Item_Fat_Content'] == "Regular" %}selected{% endif %}>Regular</option>
+                </select>
+              </div>
+
+              <div class="col-sm-3">
+                <label for="Item_Type">Item Type</label>
+                <select class="form-control" id="Item_Type" name="Item_Type" required>
+                  <option disabled selected value>-- Select an Option --</option>
+                  <option value="Snack Foods" {% if form_data and form_data['Item_Type'] == "Snack Foods" %}selected{% endif %}>Snack Foods</option>
+                  <option value="Frozen Foods" {% if form_data and form_data['Item_Type'] == "Frozen Foods" %}selected{% endif %}>Frozen Foods</option>
+                  <option value="Dairy" {% if form_data and form_data['Item_Type'] == "Dairy" %}selected{% endif %}>Dairy</option>
+                  <option value="Breads" {% if form_data and form_data['Item_Type'] == "Breads" %}selected{% endif %}>Breads</option>
+                  <option value="Fruits and Vegetables" {% if form_data and form_data['Item_Type'] == "Fruits and Vegetables" %}selected{% endif %}>Fruits and Vegetables</option>
+                  <option value="Soft Drinks" {% if form_data and form_data['Item_Type'] == "Soft Drinks" %}selected{% endif %}>Soft Drinks</option>
+                  <option value="Starchy Foods" {% if form_data and form_data['Item_Type'] == "Starchy Foods" %}selected{% endif %}>Starchy Foods</option>
+                  <option value="Canned" {% if form_data and form_data['Item_Type'] == "Canned" %}selected{% endif %}>Canned</option>
+                  <option value="Household" {% if form_data and form_data['Item_Type'] == "Household" %}selected{% endif %}>Household</option>
+                  <option value="Seafood" {% if form_data and form_data['Item_Type'] == "Seafood" %}selected{% endif %}>Seafood</option>
+                  <option value="Breakfast" {% if form_data and form_data['Item_Type'] == "BreakFast" %}selected{% endif %}>Breakfast</option>
+                  <option value="Meat" {% if form_data and form_data['Item_Type'] == "Meat" %}selected{% endif %}>Meat</option>
+                  <option value="Health and Hygiene" {% if form_data and form_data['Item_Type'] == "Health and Hygiene" %}selected{% endif %}>Health and Hygiene</option>
+                  <option value="Hard Drinks" {% if form_data and form_data['Item_Type'] == "Hard Drinks" %}selected{% endif %}>Hard Drinks</option>
+                  <option value="Others" {% if form_data and form_data['Item_Type'] == "Others" %}selected{% endif %}>Others</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-sm-3">
+                <label for="Outlet_Identifier">Outlet Identifier</label>
+                <select class="form-control" id="Outlet_Identifier" name="Outlet_Identifier" required>
+                  <option disabled selected value>-- Select an Option --</option>
+                  <option value="OUT013" {% if form_data and form_data['Outlet_Identifier'] == "OUT013" %}selected{% endif %}>OUT013</option>
+                  <option value="OUT017" {% if form_data and form_data['Outlet_Identifier'] == "OUT017" %}selected{% endif %}>OUT017</option>
+                  <option value="OUT018"{% if form_data and form_data['Outlet_Identifier'] == "OUT018" %}selected{% endif %}>OUT018</option>
+                  <option value="OUT019"{% if form_data and form_data['Outlet_Identifier'] == "OUT019" %}selected{% endif %}>OUT019</option>
+                  <option value="OUT027"{% if form_data and form_data['Outlet_Identifier'] == "OUT027" %}selected{% endif %}>OUT027</option>
+                  <option value="OUT035"{% if form_data and form_data['Outlet_Identifier'] == "OUT035" %}selected{% endif %}>OUT035</option>
+                  <option value="OUT045"{% if form_data and form_data['Outlet_Identifier'] == "OUT045" %}selected{% endif %}>OUT045</option>
+                  <option value="OUT046"{% if form_data and form_data['Outlet_Identifier'] == "OUT046" %}selected{% endif %}>OUT046</option>
+                  <option value="OUT049"{% if form_data and form_data['Outlet_Identifier'] == "OUT049" %}selected{% endif %}>OUT049</option>
+                </select>
+              </div>
+
+              <div class="col-sm-3">
+                <label for="Outlet_Size">Outlet Size</label>
+                <select class="form-control" id="Outlet_Size" name="Outlet_Size" required>
+                  <option disabled selected value>-- Select an Option --</option>
+                  <option value="Small" {% if form_data and form_data['Outlet_Size'] == "Small" %}selected{% endif %}>Small</option>
+                  <option value="Medium" {% if form_data and form_data['Outlet_Size'] == "Medium" %}selected{% endif %}>Medium</option>
+                  <option value="Large" {% if form_data and form_data['Outlet_Size'] == "Large" %}selected{% endif %}>Large</option>
+                </select>
+              </div>
+
+              <div class="col-sm-3">
+                <label for="Outlet_Location_Type">Outlet Location Type</label>
+                <select class="form-control" id="Outlet_Location_Type" name="Outlet_Location_Type" required>
+                  <option disabled selected value>-- Select an Option --</option>
+                  <option value="Tier 1" {% if form_data and form_data['Outlet_Location_Type'] == "Tier 1" %}selected{% endif %}>Tier 1</option>
+                  <option value="Tier 2" {% if form_data and form_data['Outlet_Location_Type'] == "Tier 2" %}selected{% endif %}>Tier 2</option>
+                  <option value="Tier 3" {% if form_data and form_data['Outlet_Location_Type'] == "Tier 3" %}selected{% endif %}>Tier 3</option>
+                </select>
+              </div>
+
+              <div class="col-sm-3">
+                <label for="Outlet_Type">Outlet Type</label>
+                <select class="form-control" id="Outlet_Type" name="Outlet_Type" required>
+                  <option disabled selected value>-- Select an Option --</option>
+                  <option value="Supermarket Type1" {% if form_data and form_data['Outlet_Type'] == "Supermarket Type1" %}selected{% endif %}>Supermarket Type1</option>
+                  <option value="Supermarket Type2" {% if form_data and form_data['Outlet_Type'] == "Supermarket Type2" %}selected{% endif %}>Supermarket Type2</option>
+                  <option value="Supermarket Type3" {% if form_data and form_data['Outlet_Type'] == "Supermarket Type3" %}selected{% endif %}>Supermarket Type3</option>
+                  <option value="Grocery Store" {% if form_data and form_data['Outlet_Type'] == "Grocery Store" %}selected{% endif %}>Grocery Store</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <input class="btn btn-primary" type="submit" />
+            </div>
+          </div>
+
+          <br /><br />
+          <div>
+            <!-- Sales : {{Price}} -->
+            {% if Price is not none %}
+            <div class="alert alert-success">
+                <h3>Predicted Sales: {{ Price }}</h3>
+            </div>
+            {% endif %}            
+          </div>
+        </fieldset>
+      </form>
+      {% if bar_chart or pie_chart or hist_chart %}
+        <div class="container text-center">
+          <h3 style="text-align: center; background: rgba(255, 255, 255, 0.8); border-radius: 10px;">Data Visualizations</h3>
+          {% if bar_chart %}
+          <h3 style="text-align: center; background: rgba(255, 255, 255, 0.8); border-radius: 10px;">Bar chart</h3>
+            <img src="{{ bar_chart }}" class="img-fluid" alt="Bar Chart">
+          {% endif %}
+          <br/>
+          {% if pie_chart %}
+          <h3 style="text-align: center; background: rgba(255, 255, 255, 0.8); border-radius: 10px;">Pie Chart</h3>
+            <img src="{{ pie_chart }}" class="img-fluid" alt="Pie Chart">
+          {% endif %}
+          <br/>
+          {% if hist_chart %}
+          <h3 style="text-align: center; background: rgba(255, 255, 255, 0.8); border-radius: 10px;">Histogram</h3>
+            <img src="{{ hist_chart }}" class="img-fluid" alt="Histogram">
+          {% endif %}
+          <br/>
+        </div>
+      {% endif %}
+    </div>
+
+    <script>
+      function submitForm() {
+          var formData = new FormData(document.querySelector('.app'));
+          
+          fetch('/predict', {
+              method: 'POST',
+              body: formData
+          })
+          .then(response => response.text())
+          .then(html => {
+              document.body.innerHTML = html; // Replace page content with new content
+          })
+          .catch(error => console.error('Error:', error));
+      }
+  </script>
+  
+  </body>
+</html>
+
+

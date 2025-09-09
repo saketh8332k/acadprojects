@@ -1,0 +1,17 @@
+. {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.bg-dark {
+    background-color:rgb(27, 57, 210);
+}
+
+.mt-50 {
+    margin-top: 50px;
+}
+
+#canvas {
+    border: 2px solid black;
+}
